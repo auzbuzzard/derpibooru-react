@@ -17,9 +17,8 @@ export default class FeedItem extends Component<Props> {
                 <FitImage
                     source={{uri: this.props.data.previewImageUrl}}
                     originalWidth={100}
-                    originalHeight={100}
+                    originalHeight={Math.min(100 * this.props.data.size.height / this.props.data.size.width, 100 * Dimensions.get('window').height * 0.75)}
                 />
-                <Text>{this.props.data.imageUrl}</Text>
 
             </View>
         );
@@ -30,8 +29,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         borderWidth: 1,
+        borderRadius: 5,
         width: Dimensions.get('window').width - 20,
-        margin: 10,
+        marginHorizontal: 10,
+        marginVertical: 5,
         padding: 3,
     },
     title: {
