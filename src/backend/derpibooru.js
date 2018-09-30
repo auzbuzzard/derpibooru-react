@@ -1,40 +1,42 @@
 import React, {Component} from 'react';
+import axios from 'axios';
 
 export class DerpiFeed {
 
 	constructor(props) {	
 	  this.feed = [];
+	  this.currPage = 1
 	}
 
 	reset() {
-		var state = this.state;
-		state.feed = [];
-		this.setState(state);
+        this.feed = [];
+		this.currPage = 1;
 	}
 
 	getFeed(getAsNew) {
 		if (getAsNew === true) {
 			this.reset();
-		}
-		return fetch('https://derpibooru.org/images.json', {
-			method: 'GET',
+		} else {
+		    this.currPage += 1;
+        }
+
+		return axios.get('https://derpibooru.org/images.json', {
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
 			},
+            params: {
+			    page: this.currPage
+            }
 		}).then((response) => {
-			return response.json();
-		}).then((jsonText) => {
-			let imageList = jsonText['images'];
-			console.log('hello')
+			let imageList = response.data['images'];
 			return new Promise((resolve, reject) => {
 				resolve(imageList.map((image) => {
 					return new DerpiImage(image);
 				}));
 			})
 		}).then((pList) => {
-			this.feed = pList;
-			console.log(this.feed.length);
+			this.feed = this.feed.concat(pList);
 		});
 	}
 }
@@ -55,6 +57,14 @@ export class DerpiImage {
 
 	get imageUrl() {
 		return 'https:' + this._rawJson['image'];
+	}
+
+	get previewImageUrl() {
+	    return 'https:' + this._rawJson['representations']['medium'];
+    }
+
+	get size() {
+		return {width: this._rawJson['width'], height: this._rawJson['height']}
 	}
 }
 

@@ -7,42 +7,57 @@ import {DerpiFeed, DerpiImage} from '../../backend/derpibooru';
 type Props = {};
 export default class Feed extends Component<Props> {
 
-  constructor(props) {
-    super(props);
-  
-    this.state = {
-      data: []
+    constructor(props) {
+        super(props);
+        this.derpiFeed = new DerpiFeed();
+        this.state = {
+            data: [],
+            feedRefreshing: false
+        };
+    }
+
+    updateData() {
+        this.derpiFeed.getFeed().then(() => {
+            let state = this.state;
+            state.data = this.derpiFeed.feed.map((item) => {
+                return {key: item.id.toString(), data: item};
+            });
+            state.feedRefreshing = false;
+            this.setState(state);
+        })
+    }
+
+    componentDidMount() {
+        this.updateData()
+    }
+
+    onEndReached = (info) => {
+        this.updateData()
     };
-  }
 
-  componentDidMount() {
-    db = new DerpiFeed()
-    db.getFeed().then(() => {
-      state = this.state;
-      console.log('feed', db.feed);
+    onRefresh = () => {
+        this.derpiFeed.reset();
+        this.state.feedRefreshing = true;
+        this.updateData();
+    }
 
-      state.data = db.feed.map((item) => {
-        return {key: item.id.toString(), data: item};
-      });
-      this.setState(state);
-      console.log(this.state)
-    })
-  }
-
-  render() {
-    return (
-      <FlatList contentContainterStyle={styles.flatList}
-        data={this.state.data}
-        renderItem={({item}) => <FeedItem key={item.key} data={item.data}/>}
-      />
-    );
-  }
+    render() {
+        return (
+            <FlatList contentContainterStyle={styles.flatList}
+                      data={this.state.data}
+                      renderItem={({item}) => <FeedItem key={item.key} data={item.data}/>}
+                      onEndReached={this.onEndReached}
+                      onRefresh={this.onRefresh}
+                      refreshing={this.state.feedRefreshing}
+            />
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-  flatList: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    backgroundColor: '#F5FCFF',
-  },
+    flatList: {
+        flexGrow: 1,
+        justifyContent: 'center',
+        backgroundColor: '#F5FCFF',
+    },
 });
