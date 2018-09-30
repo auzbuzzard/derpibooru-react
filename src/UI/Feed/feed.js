@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, FlatList} from 'react-native';
 
 import FeedItem from './feedItem';
 import {DerpiFeed, DerpiImage} from '../../backend/derpibooru';
+import uuidv4 from 'uuid';
 
 type Props = {};
 export default class Feed extends Component<Props> {
@@ -12,7 +13,8 @@ export default class Feed extends Component<Props> {
         this.derpiFeed = new DerpiFeed();
         this.state = {
             data: [],
-            feedRefreshing: false
+            feedRefreshing: false,
+            endOfFeed: false,
         };
     }
 

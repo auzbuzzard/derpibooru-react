@@ -3,9 +3,11 @@ import axios from 'axios';
 
 export class DerpiFeed {
 
-	constructor(props) {	
-	  this.feed = [];
-	  this.currPage = 1
+	constructor(mode, params) {
+		this.feed = [];
+		this.currPage = 1;
+		this.endOfFile = false;
+
 	}
 
 	reset() {
