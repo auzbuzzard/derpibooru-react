@@ -9,11 +9,11 @@ import {colors} from "../styles";
 type Props = {};
 export default class Feed extends Component<Props> {
 
-    constructor(props) {
+    constructor(props, derpiSearch) {
         super(props);
         this.canRefresh = true;
         this.feedRefreshing = false;
-        this.derpiFeed = new DerpiFeed();
+        this.derpiFeed = undefined;
         this.state = {
             data: [],
             endOfFeed: false,
@@ -22,7 +22,7 @@ export default class Feed extends Component<Props> {
 
     updateData() {
         this.canRefresh = false;
-        this.feedRefreshing = true;
+        // this.feedRefreshing = true;
         this.derpiFeed.getFeed().then((pList) => {
             this.feedRefreshing = false;
             let newData = pList.map((item) => {
@@ -31,10 +31,20 @@ export default class Feed extends Component<Props> {
             this.setState({data: this.state.data.concat(newData)});
             // console.log(this.state.data);
             this.canRefresh = true;
+        }).catch(reason => {
+            console.error(reason)
         })
+
     }
 
     componentDidMount() {
+        console.log('nav', this.props.navigation);
+
+        let derpiSearch = this.props.navigation?.getParam('derpiSearch', null);
+        console.log(derpiSearch);
+        this.derpiFeed  = new DerpiFeed(derpiSearch);
+
+        this.feedRefreshing = true;
         this.updateData()
     }
 

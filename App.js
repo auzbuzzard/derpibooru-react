@@ -3,29 +3,28 @@ import {StyleSheet, Text, View, StatusBar} from 'react-native';
 import {createBottomTabNavigator} from 'react-navigation';
 
 import { HomeFeedStack } from './src/UI/Screens/home';
+import {SearchFeedStack} from "./src/UI/Screens/search";
 import {colors} from "./src/UI/styles";
 
 const RootBottomBar = createBottomTabNavigator(
     {
         Home: HomeFeedStack,
-
+        Search: SearchFeedStack,
     },
     {
-        navigationOptions: ({ navigation }) => ({
-            tabBarIcon: ({ focused, tintColor }) => {
-                const { routeName } = navigation.state;
-                let iconName;
-                if (routeName === 'Home') {
-                    iconName = `ios-information-circle${focused ? '' : '-outline'}`;
-                } else if (routeName === 'Settings') {
-                    iconName = `ios-options${focused ? '' : '-outline'}`;
-                }
-
-                // You can return any component that you like here! We usually use an
-                // icon component from react-native-vector-icons
-                //return <Ionicons name={iconName} size={25} color={tintColor} />;
+        navigationOptions: {
+            headerStyle: {
+                backgroundColor: colors.background_base,
             },
-        }),
+            headerTintColor: colors.highlight,
+            headerTitleStyle: {
+                fontWeight: 'bold',
+            },
+        },
+        cardStyle: {
+            backgroundColor: colors.background_base,
+        },
+
         tabBarOptions: {
             activeTintColor: colors.highlight,
             inactiveTintColor: colors.highlight2,

@@ -11,13 +11,13 @@ class HomeFeed extends Component<Props> {
     static navigationOptions = {
         title: 'Home',
         header: null,
-        headerStyle: {
-            backgroundColor: colors.background_base,
-        },
-        headerTintColor: colors.highlight,
-        headerTitleStyle: {
-            fontWeight: 'bold',
-        },
+        // headerStyle: {
+        //     backgroundColor: colors.background_base,
+        // },
+        // headerTintColor: colors.highlight,
+        // headerTitleStyle: {
+        //     fontWeight: 'bold',
+        // },
     };
 
     constructor(props) {
@@ -45,4 +45,17 @@ export const HomeFeedStack = createStackNavigator({
     Home: {
         screen: HomeFeed
     },
+}, {
+    navigationOptions: {
+        headerStyle: {
+            backgroundColor: colors.background_base,
+        },
+        headerTintColor: colors.highlight,
+        headerTitleStyle: {
+            fontWeight: 'bold',
+        },
+    },
+    cardStyle: {
+        backgroundColor: colors.background_base,
+    }
 });

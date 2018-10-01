@@ -3,11 +3,11 @@ import axios from 'axios';
 
 export class DerpiFeed {
 
-    constructor(mode, params) {
+    constructor(derpiSearch) {
         this.feed = [];
         this.currPage = 0;
         this.endOfFile = false;
-
+        this.derpiSearch = derpiSearch;
     }
 
     reset() {
@@ -21,16 +21,23 @@ export class DerpiFeed {
         } else {
             this.currPage += 1;
         }
-        return axios.get('https://derpibooru.org/images.json', {
+        console.debug('page', this.currPage, 'feed', this.feed);
+
+        let mode = this.derpiSearch ? 'search' : 'images';
+
+        console.log('dsfnsdi', this.derpiSearch);
+
+        return axios.get(`https://derpibooru.org/${mode}.json`, {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
             },
             params: {
-                page: this.currPage
+                page: this.currPage,
+                q: this.derpiSearch ? this.derpiSearch.searchTerm : '',
             }
         }).then((response) => {
-            let imageList = response.data['images'];
+            let imageList = response.data[mode];
             return new Promise((resolve, reject) => {
                 resolve(imageList.map((image) => {
                     return new DerpiImage(image);
@@ -48,7 +55,6 @@ export class DerpiFeed {
                 // resolve(numList);
             });
 
-            console.log('page', this.currPage, 'feed', this.feed);
         });
     }
 }
