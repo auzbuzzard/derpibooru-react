@@ -1,31 +1,36 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, FlatList} from 'react-native';
+import {StyleSheet, Text, View, SafeAreaView, FlatList} from 'react-native';
 
-import FeedItem from './feedItem';
+import FeedItem, { FeedItemTest } from './feedItem';
 import {DerpiFeed, DerpiImage} from '../../backend/derpibooru';
 import uuidv4 from 'uuid';
+import {colors} from "../styles";
 
 type Props = {};
 export default class Feed extends Component<Props> {
 
     constructor(props) {
         super(props);
+        this.canRefresh = true;
+        this.feedRefreshing = false;
         this.derpiFeed = new DerpiFeed();
         this.state = {
             data: [],
-            feedRefreshing: false,
             endOfFeed: false,
         };
     }
 
     updateData() {
-        this.derpiFeed.getFeed().then(() => {
-            let state = this.state;
-            state.data = this.derpiFeed.feed.map((item) => {
+        this.canRefresh = false;
+        this.feedRefreshing = true;
+        this.derpiFeed.getFeed().then((pList) => {
+            this.feedRefreshing = false;
+            let newData = pList.map((item) => {
                 return {key: uuidv4(), data: item};
             });
-            state.feedRefreshing = false;
-            this.setState(state);
+            this.setState({data: this.state.data.concat(newData)});
+            console.log(this.state.data);
+            this.canRefresh = true;
         })
     }
 
@@ -34,24 +39,30 @@ export default class Feed extends Component<Props> {
     }
 
     onEndReached = (info) => {
-        //this.updateData()
+        if(!this.canRefresh) return;
+        console.log('OnEndReached fdgjodijgiosjgpoijdfgposjgi');
+        this.updateData()
     };
 
     onRefresh = () => {
         this.derpiFeed.reset();
-        this.state.feedRefreshing = true;
+        this.feedRefreshing = true;
         this.updateData();
     }
 
     render() {
         return (
-            <FlatList contentContainterStyle={styles.flatList}
-                      data={this.state.data}
-                      renderItem={({item}) => <FeedItem key={item.key} data={item.data}/>}
-                      onEndReached={this.onEndReached}
-                      onRefresh={this.onRefresh}
-                      refreshing={this.state.feedRefreshing}
-            />
+            <SafeAreaView style={{backgroundColor: colors.background_base}}>
+                <FlatList contentContainterStyle={styles.flatList}
+                          data={this.state.data}
+                          renderItem={({item}) => <FeedItem key={item.key} data={item.data}/>}
+                          initialNumToRender={this.state.data.length}
+                          onEndReached={this.onEndReached}
+                          onEndReachedThreshold={0.2}
+                          onRefresh={this.onRefresh}
+                          refreshing={this.feedRefreshing}
+                />
+            </SafeAreaView>
         );
     }
 }
@@ -62,6 +73,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: colors.background_base,
     },
 });

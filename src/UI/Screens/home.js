@@ -1,11 +1,24 @@
-import React, {Component} from 'react';
-import {StyleSheet, Text, View, SafeAreaView, FlatList} from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, FlatList} from 'react-native';
+import { createStackNavigator } from 'react-navigation';
 
 import Feed from '../Feed/feed';
 import { colors } from "../styles";
 
 type Props = {};
-export default class HomeFeed extends Component<Props> {
+class HomeFeed extends Component<Props> {
+
+    static navigationOptions = {
+        title: 'Home',
+        header: null,
+        // headerStyle: {
+        //     backgroundColor: colors.background_base,
+        // },
+        // headerTintColor: colors.highlight,
+        // headerTitleStyle: {
+        //     fontWeight: 'bold',
+        // },
+    };
 
     static get options() {
         return {
@@ -48,9 +61,8 @@ export default class HomeFeed extends Component<Props> {
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        width: '100%',
+export const HomeFeedStack = createStackNavigator({
+    Home: {
+        screen: HomeFeed
     },
 });
-

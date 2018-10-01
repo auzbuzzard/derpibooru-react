@@ -19,21 +19,35 @@ export default class FeedItem extends Component<Props> {
             return ratio <= maxRatio ? height : width * maxRatio
         })();
         return (
-            <SafeAreaView>
-                <View style={styles.container}>
-                    <FitImage
-                        source={{uri: this.props.data.previewImageUrl}}
-                        indicatorColor="white"
-                        indicatorSize="large"
-                        resizeMode={"contain"}
-                        originalWidth={this.props.data.size.width}
-                        originalHeight={maxOriginalHeight}
-                    />
-                    <View style={styles.imageOverlayContainer}>
-                        <Text style={styles.imageOverlay}>{this.props.data.id.toString()}</Text>
-                    </View>
+            <View style={styles.container}>
+                <FitImage
+                    source={{uri: this.props.data.previewImageUrl}}
+                    indicatorColor="white"
+                    indicatorSize="large"
+                    resizeMode={"contain"}
+                    originalWidth={this.props.data.size.width}
+                    originalHeight={maxOriginalHeight}
+                    maxHeight={800}
+                />
+                <View style={styles.imageOverlayContainer}>
+                    <Text style={styles.imageOverlay}>{this.props.data.id.toString()}</Text>
                 </View>
-            </SafeAreaView>
+            </View>
+        );
+    }
+}
+
+export class FeedItemTest extends Component<Props> {
+
+    static defaultProps = {
+        key: -1,
+    };
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <Text style={{height: 60}}>{this.props.data}</Text>
+            </View>
         );
     }
 }
@@ -42,9 +56,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         borderRadius: 10,
-        width: 300,
+        width: '94%',
         marginHorizontal: '3%',
-        marginVertical: 6,
+        marginVertical: '1.5%',
         padding: 0,
         backgroundColor: colors.background_element,
         //shadowOpacity: 1,
@@ -56,9 +70,9 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 12,
         right: 12,
-        shadowOpacity: 1,
-        shadowRadius: 5,
-        shadowColor: 'gray',
+        //shadowOpacity: 1,
+        //shadowRadius: 5,
+        //shadowColor: 'gray',
     },
     imageOverlay: {
         color: colors.text,

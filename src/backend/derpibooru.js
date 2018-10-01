@@ -5,14 +5,14 @@ export class DerpiFeed {
 
     constructor(mode, params) {
         this.feed = [];
-        this.currPage = 1;
+        this.currPage = 0;
         this.endOfFile = false;
 
     }
 
     reset() {
         this.feed = [];
-        this.currPage = 1;
+        this.currPage = 0;
     }
 
     getFeed(getAsNew) {
@@ -21,7 +21,6 @@ export class DerpiFeed {
         } else {
             this.currPage += 1;
         }
-
         return axios.get('https://derpibooru.org/images.json', {
             headers: {
                 Accept: 'application/json',
@@ -38,7 +37,18 @@ export class DerpiFeed {
                 }));
             })
         }).then((pList) => {
+            console.log('got page', this.currPage);
             this.feed = this.feed.concat(pList);
+            // let numList = pList.map((item, idx) => {
+            //     return idx + 15 * (this.currPage - 1);
+            // });
+            // this.feed = this.feed.concat(numList);
+            return new Promise((resolve, reject) => {
+                resolve(pList);
+                // resolve(numList);
+            });
+
+            console.log('page', this.currPage, 'feed', this.feed);
         });
     }
 }
