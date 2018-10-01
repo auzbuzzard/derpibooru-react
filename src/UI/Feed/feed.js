@@ -22,7 +22,7 @@ export default class Feed extends Component<Props> {
         this.derpiFeed.getFeed().then(() => {
             let state = this.state;
             state.data = this.derpiFeed.feed.map((item) => {
-                return {key: item.id.toString(), data: item};
+                return {key: uuidv4(), data: item};
             });
             state.feedRefreshing = false;
             this.setState(state);
@@ -34,7 +34,7 @@ export default class Feed extends Component<Props> {
     }
 
     onEndReached = (info) => {
-        this.updateData()
+        //this.updateData()
     };
 
     onRefresh = () => {
@@ -58,7 +58,9 @@ export default class Feed extends Component<Props> {
 
 const styles = StyleSheet.create({
     flatList: {
-        flexGrow: 1,
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#F5FCFF',
     },

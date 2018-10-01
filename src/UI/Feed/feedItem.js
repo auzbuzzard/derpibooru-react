@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Dimensions, Image} from 'react-native';
+import {StyleSheet, Text, View, SafeAreaView, Dimensions, Image} from 'react-native';
 
 import FitImage from 'react-native-fit-image';
+
+import { colors } from "../styles";
 
 type Props = {};
 export default class FeedItem extends Component<Props> {
@@ -11,16 +13,27 @@ export default class FeedItem extends Component<Props> {
     };
 
     render() {
+        let maxOriginalHeight = (() => {
+            const maxRatio = 2;
+            let {height, width, ratio} = this.props.data.size;
+            return ratio <= maxRatio ? height : width * maxRatio
+        })();
         return (
-            <View style={styles.container}>
-                <Text>{this.props.data.id.toString()}</Text>
-                <FitImage
-                    source={{uri: this.props.data.previewImageUrl}}
-                    originalWidth={100}
-                    originalHeight={Math.min(100 * this.props.data.size.height / this.props.data.size.width, 100 * Dimensions.get('window').height * 0.75)}
-                />
-
-            </View>
+            <SafeAreaView>
+                <View style={styles.container}>
+                    <FitImage
+                        source={{uri: this.props.data.previewImageUrl}}
+                        indicatorColor="white"
+                        indicatorSize="large"
+                        resizeMode={"contain"}
+                        originalWidth={this.props.data.size.width}
+                        originalHeight={maxOriginalHeight}
+                    />
+                    <View style={styles.imageOverlayContainer}>
+                        <Text style={styles.imageOverlay}>{this.props.data.id.toString()}</Text>
+                    </View>
+                </View>
+            </SafeAreaView>
         );
     }
 }
@@ -28,24 +41,30 @@ export default class FeedItem extends Component<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        borderWidth: 1,
-        borderRadius: 5,
-        width: Dimensions.get('window').width - 20,
-        marginHorizontal: 10,
-        marginVertical: 5,
-        padding: 3,
-    },
-    title: {
+        borderRadius: 10,
+        width: 300,
+        marginHorizontal: '3%',
+        marginVertical: 6,
+        padding: 0,
+        backgroundColor: colors.background_element,
+        //shadowOpacity: 1,
+        //shadowRadius: 5,
+        overflow: 'hidden',
 
     },
-    imageContainer: {
-        flex: 1,
-        alignItems: 'stretch',
-        position: 'relative',
+    imageOverlayContainer: {
+        position: 'absolute',
+        bottom: 12,
+        right: 12,
+        shadowOpacity: 1,
+        shadowRadius: 5,
+        shadowColor: 'gray',
     },
-    image: {
-        flex: 1,
-        width: '100%',
-        height: '100%',
-    }
+    imageOverlay: {
+        color: colors.text,
+        padding: 10,
+        borderRadius: 20,
+        backgroundColor: 'green',
+        overflow: 'hidden',
+    },
 });
