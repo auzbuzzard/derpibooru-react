@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, StatusBar} from 'react-native';
 import {createBottomTabNavigator} from 'react-navigation';
 
 import { HomeFeedStack } from './src/UI/Screens/home';
@@ -32,7 +32,6 @@ const RootBottomBar = createBottomTabNavigator(
             style: {
                 backgroundColor: colors.background_base,
             },
-            backgroundColor: colors.background_base,
         },
 
     }

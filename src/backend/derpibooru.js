@@ -37,7 +37,7 @@ export class DerpiFeed {
                 }));
             })
         }).then((pList) => {
-            console.log('got page', this.currPage);
+            // console.log('got page', this.currPage);
             this.feed = this.feed.concat(pList);
             // let numList = pList.map((item, idx) => {
             //     return idx + 15 * (this.currPage - 1);

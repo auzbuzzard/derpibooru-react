@@ -11,38 +11,14 @@ class HomeFeed extends Component<Props> {
     static navigationOptions = {
         title: 'Home',
         header: null,
-        // headerStyle: {
-        //     backgroundColor: colors.background_base,
-        // },
-        // headerTintColor: colors.highlight,
-        // headerTitleStyle: {
-        //     fontWeight: 'bold',
-        // },
+        headerStyle: {
+            backgroundColor: colors.background_base,
+        },
+        headerTintColor: colors.highlight,
+        headerTitleStyle: {
+            fontWeight: 'bold',
+        },
     };
-
-    static get options() {
-        return {
-            statusBar: {
-                visible: true,
-                style: "light",
-                translucent: false,
-            },
-            topBar: {
-                title: {
-                    text: 'Home',
-
-                }
-            },
-            bottomTab: {
-                text: 'Home',
-                textColor: colors.highlight2,
-                selectedTextColor: colors.highlight,
-            },
-            layout: {
-                orientation: ['portrait'] // An array of supported orientations
-            },
-        }
-    }
 
     constructor(props) {
         super(props);
@@ -55,6 +31,10 @@ class HomeFeed extends Component<Props> {
     render() {
         return (
             <View>
+                <StatusBar
+                    barStyle="light-content"
+                    backgroundColor={colors.background_base}
+                />
                 <Feed />
             </View>
         );

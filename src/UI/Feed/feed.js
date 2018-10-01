@@ -29,7 +29,7 @@ export default class Feed extends Component<Props> {
                 return {key: uuidv4(), data: item};
             });
             this.setState({data: this.state.data.concat(newData)});
-            console.log(this.state.data);
+            // console.log(this.state.data);
             this.canRefresh = true;
         })
     }
