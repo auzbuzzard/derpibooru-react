@@ -34,14 +34,20 @@ export class DerpiFeed {
             },
             params: {
                 page: this.currPage,
-                q: this.derpiSearch ? this.derpiSearch.searchTerm : '',
+                q: this.derpiSearch?.searchTerm ?? ``,
             }
         }).then((response) => {
+            console.log('data', response);
             let imageList = response.data[mode];
             return new Promise((resolve, reject) => {
-                resolve(imageList.map((image) => {
-                    return new DerpiImage(image);
-                }));
+                console.log('image', imageList);
+                if (imageList === null) {
+                    reject(Error("Returned imageList is null"));
+                } else {
+                    resolve(imageList.map((image) => {
+                        return new DerpiImage(image);
+                    }));
+                }
             })
         }).then((pList) => {
             // console.log('got page', this.currPage);
