@@ -5,11 +5,13 @@ import {createBottomTabNavigator} from 'react-navigation';
 import { HomeFeedStack } from './src/UI/Screens/home';
 import {SearchFeedStack} from "./src/UI/Screens/search";
 import {colors} from "./src/UI/styles";
+import {UserHomeStack} from "./src/UI/Screens/user";
 
 const RootBottomBar = createBottomTabNavigator(
     {
         Home: HomeFeedStack,
         Search: SearchFeedStack,
+        User: UserHomeStack,
     },
     {
         navigationOptions: {

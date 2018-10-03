@@ -38,6 +38,7 @@ class SearchFeedBar extends Component {
                     color: colors.text,
 
                 }}
+                inputContainerStyle={{backgroundColor: colors.background_base}}
                 containerStyle={{backgroundColor: colors.background_base}}
                 onChangeText={(text) => this.setState({searchText: text})}
                 onClear={this.searchOnClear}
@@ -55,17 +56,20 @@ class SearchFeed extends Component<Props> {
     static navigationOptions = ({navigation}) => {
         return {
             title: 'search',
-            header: <View><SearchFeedBar navigation={navigation}/></View>,
+            header: <View paddingTop={44}>
+                <StatusBar
+                    barStyle="light-content"
+                    backgroundColor={colors.background_base}
+                />
+                <SearchFeedBar navigation={navigation}/>
+            </View>,
         };
     };
 
     render() {
         return (
             <View style={{backgroundColor: colors.background_base}}>
-                <StatusBar
-                    barStyle="light-content"
-                    backgroundColor={colors.background_base}
-                />
+
             </View>
         );
     }
